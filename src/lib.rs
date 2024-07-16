@@ -21,17 +21,32 @@
 /// assert_eq!(Fruit::Apple, Fruit::from_str("🍎").unwrap());
 /// assert_eq!(Fruit::Apple, "🍎".parse().unwrap());
 /// ```
+///
+/// You can also set the visibility of enums.
+/// ```
+/// assert_eq!("🍎", sub::Fruit::Apple.as_str());
+///
+/// mod sub {
+/// #   use enum_str::enum_str;
+///     enum_str! {
+///         pub Fruit,
+///         (Apple, "🍎"),
+///         (Pineapple, "🍍"),
+///         (Strawberry, "🍓"),
+///     }
+/// }
+/// ```
 #[macro_export]
 macro_rules! enum_str {
-    ($name:ident, $(($key:ident, $value:expr),)*) => {
+    ($vis:vis $name:ident, $(($key:ident, $value:expr),)*) => {
         #[derive(Debug, Clone, PartialEq)]
-       enum $name
+       $vis enum $name
         {
             $($key),*
         }
 
         impl $name {
-            fn as_str(&self) -> &str {
+            $vis fn as_str(&self) -> &str {
                 match self {
                     $(
                         &$name::$key => $value
