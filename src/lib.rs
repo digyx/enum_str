@@ -17,6 +17,7 @@
 /// }
 ///
 /// assert_eq!("🍎", Fruit::Apple.as_str());
+/// assert_eq!("🍎", Fruit::Apple.to_string().as_str());
 /// assert_eq!(Fruit::Apple, Fruit::from_str("🍎").unwrap());
 /// assert_eq!(Fruit::Apple, "🍎".parse().unwrap());
 /// ```
@@ -34,6 +35,16 @@ macro_rules! enum_str {
                 match self {
                     $(
                         &$name::$key => $value
+                    ),*
+                }
+            }
+        }
+
+        impl std::fmt::Display for $name {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                match self {
+                    $(
+                        &$name::$key => write!(f, "{}", $value)
                     ),*
                 }
             }
@@ -69,6 +80,11 @@ mod test {
     #[test]
     fn test_as_str() {
         assert_eq!("🍎", Fruit::Apple.as_str());
+    }
+
+    #[test]
+    fn test_to_string() {
+        assert_eq!("🍎", Fruit::Apple.to_string().as_str());
     }
 
     #[test]
