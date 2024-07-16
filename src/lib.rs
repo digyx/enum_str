@@ -24,7 +24,7 @@
 #[macro_export]
 macro_rules! enum_str {
     ($name:ident, $(($key:ident, $value:expr),)*) => {
-        #[derive(Debug, PartialEq)]
+        #[derive(Debug, Clone, PartialEq)]
        enum $name
         {
             $($key),*
